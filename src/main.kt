@@ -3,6 +3,8 @@ import korlibs.time.*
 import korlibs.korge.*
 import korlibs.korge.scene.*
 import korlibs.korge.tween.*
+import korlibs.korge.view.Text
+import korlibs.korge.view.text
 import korlibs.korge.view.*
 import korlibs.image.color.*
 import korlibs.image.format.*
@@ -14,7 +16,7 @@ import korlibs.math.interpolation.*
 import java.time.Instant
 import java.time.Duration
 
-const val BOARD_SIZE_X = 10
+const val BOARD_SIZE_X = 8
 const val BOARD_SIZE_Y = 12
 const val UPDATE_TIME = 0.1
 const val BLOCK_SIZE = 30.0
@@ -64,6 +66,12 @@ class Figure(container: Container) {
         }
         this.x += 1
     }
+
+    fun hide(){
+        for(i in 0..<4){
+            this.blocks[i].removeFromParent()
+        }
+    }
 }
 
 class Board(val container: Container) {
@@ -76,6 +84,7 @@ class Board(val container: Container) {
     }
     var figure = Figure(container)
     var last_updated = Instant.now()
+    var score = 0
 
     fun mayFall(): Boolean {
         for (i in 0..<4) {
@@ -107,12 +116,44 @@ class Board(val container: Container) {
                         }
                     }
                 }
+                this.check_full_rows()
 
+                this.figure.hide()
                 this.figure = Figure(this.container)
             }
 
             if (Key.LEFT in keys) this.figure.left()
             if (Key.RIGHT in keys) this.figure.right()
+        }
+    }
+
+    private fun remove_row(row_number: Int){
+        for(y in row_number downTo 1){
+            for(x in 0..<BOARD_SIZE_X){
+                this.grid[x][y].color = this.grid[x][y-1].color
+            }
+        }
+
+        for(x in 0..<BOARD_SIZE_X)
+            this.grid[0][x].color = BOARD_COLOR
+    }
+
+    private fun check_full_rows() {
+        var rows_removed = 0
+        for(y in 0..<BOARD_SIZE_Y){
+            // if the row is full
+            if (List(BOARD_SIZE_X){x -> this.grid[x][y]}.all{ it.color != BOARD_COLOR }){
+                this.remove_row(y)
+                rows_removed ++
+            }
+        }
+
+        this.score += when(rows_removed){
+            1 ->  100
+            2 ->  200
+            3 ->  400
+            4 ->  800
+            else -> 0
         }
     }
 }
@@ -129,8 +170,14 @@ class MyScene : Scene() {
             if (views.input.keys[Key.RIGHT]) keys.add(Key.RIGHT)
         }
 
+        val score = text("Score: 0", textSize = 32.0).apply {
+            x = 10.0
+            y = 10.0
+        }
+
         addUpdater { time ->
             board.update(keys)
+            score.text = "Score: ${board.score}"
         }
     }
 }
