@@ -1,5 +1,6 @@
 package figure
 
+import kotlin.random.Random
 import korlibs.image.color.*
 import korlibs.korge.view.*
 import settings.*
@@ -23,15 +24,183 @@ val blockPositions = listOf(
             listOf(0, 0, 0, 0),
             listOf(1, 1, 1, 1),
             listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 0, 1, 0),
+            listOf(0, 0, 1, 0),
+            listOf(0, 0, 1, 0),
+            listOf(0, 0, 1, 0)
         )
-    )
+    ),
+
+    listOf(
+        listOf(
+            listOf(1, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        )
+    ),
+
+    listOf(
+        listOf(
+            listOf(0, 0, 1, 0),
+            listOf(1, 1, 1, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 0, 0, 0),
+            listOf(1, 1, 1, 0),
+            listOf(1, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 1, 1, 0),
+            listOf(0, 0, 0, 0)
+        )
+    ),
+
+    listOf(
+        listOf(
+            listOf(0, 0, 0, 0),
+            listOf(1, 1, 1, 0),
+            listOf(0, 0, 1, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 1, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 0, 0, 0),
+            listOf(1, 1, 1, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        )
+    ),
+
+    listOf(
+        listOf(
+            listOf(0, 0, 1, 0),
+            listOf(0, 1, 1, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 1, 0, 0),
+            listOf(0, 1, 1, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(1, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 0, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 1, 1, 0),
+            listOf(0, 0, 0, 0)
+        )
+    ),
+
+    listOf(
+        listOf(
+            listOf(0, 0, 1, 0),
+            listOf(0, 1, 1, 0),
+            listOf(0, 0, 1, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 0, 0),
+            listOf(1, 1, 1, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 0, 0, 0),
+            listOf(1, 1, 1, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        )
+    ),
+
+    listOf(
+        listOf(
+            listOf(0, 1, 0, 0),
+            listOf(0, 1, 1, 0),
+            listOf(0, 0, 1, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 1, 1, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(1, 0, 0, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        ),
+        listOf(
+            listOf(0, 0, 0, 0),
+            listOf(0, 1, 1, 0),
+            listOf(1, 1, 0, 0),
+            listOf(0, 0, 0, 0)
+        )
+    ),
 )
 
 class Figure(container: Container) {
     var x = 0
     var y = 0
     val color = Colors.BLUE
-    val block_type = 0
+    val block_type = Random.nextInt(0, blockPositions.size)
     var rotation = 0
     var blockPosition = blockPositions[this.block_type][this.rotation]
     private val blocks = List(4) { i ->
