@@ -40,8 +40,19 @@ class MyScene : Scene() {
             y = 10.0
         }
 
+        val gameOverText = text("Game Over", textSize = 72.0).apply {
+            x = (views.virtualWidth - width) / 2
+            y = (views.virtualHeight - height) / 2
+            visible = false
+            color = Colors.RED
+        }
+
         addUpdater { time ->
-            board.update(keys)
+            if (board.gameOver) {
+                gameOverText.visible = true
+            } else {
+                board.update(keys)
+            }
             score.text = "Score: ${board.score}"
         }
     }

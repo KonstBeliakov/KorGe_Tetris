@@ -19,6 +19,7 @@ class Board(val container: Container) {
     private var figure = Figure(container)
     private var lastUpdated = Instant.now()
     var score = 0
+    var gameOver = false
 
     private fun mayFall(): Boolean {
         for (i in 0..<4) {
@@ -48,7 +49,6 @@ class Board(val container: Container) {
                         }
                     }
                 }
-                this.checkFullRows()
 
                 this.figure.hide()
                 this.figure = Figure(this.container)
@@ -57,6 +57,9 @@ class Board(val container: Container) {
             if (Key.LEFT in keys) this.figure.left()
             if (Key.RIGHT in keys) this.figure.right()
             if (Key.R in keys) this.figure.rotate()
+
+            this.checkFullRows()
+            this.checkGameOver()
         }
     }
 
@@ -88,5 +91,10 @@ class Board(val container: Container) {
             4 ->  800
             else -> 0
         }
+    }
+
+    private fun checkGameOver(){
+        if(List(BOARD_SIZE_X){ x -> this.grid[x][0]}.any{ it.color != BOARD_COLOR})
+            this.gameOver = true
     }
 }
