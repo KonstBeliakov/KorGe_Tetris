@@ -7,6 +7,7 @@ import korlibs.korge.view.*
 import korlibs.image.color.*
 import korlibs.image.format.*
 import korlibs.io.file.std.*
+import korlibs.io.lang.*
 import korlibs.math.geom.*
 import korlibs.math.interpolation.*
 
@@ -49,6 +50,20 @@ class Figure(container: Container) {
         }
         this.y += 1
     }
+
+    fun left(){
+        for (block in this.blocks){
+            block.x -= BLOCK_SIZE + SEPARATION
+        }
+        this.x -= 1
+    }
+
+    fun right(){
+        for (block in this.blocks){
+            block.x += BLOCK_SIZE + SEPARATION
+        }
+        this.x += 1
+    }
 }
 
 class Board(val container: Container) {
@@ -77,7 +92,7 @@ class Board(val container: Container) {
         return true
     }
 
-    fun update() {
+    fun update(keys: List<Key>) {
         if (Duration.between(last_updated, Instant.now()).seconds > UPDATE_TIME) {
             if (this.mayFall()) {
                 println("figure fall")
@@ -95,6 +110,9 @@ class Board(val container: Container) {
 
                 this.figure = Figure(this.container)
             }
+
+            if (Key.LEFT in keys) this.figure.left()
+            if (Key.RIGHT in keys) this.figure.right()
         }
     }
 }
@@ -103,21 +121,16 @@ class MyScene : Scene() {
     override suspend fun SContainer.sceneMain() {
         val board = Board(this)
 
-        //val square = solidRect(50, 50, Colors.RED) {
-        //    position(256, 256)
-        //}
-
-        /*addUpdater { time ->
-            // Скорость перемещения квадрата
-            val speed = 200 * time.seconds
-            if (views.input.keys[Key.LEFT]) square.x -= speed
-            if (views.input.keys[Key.RIGHT]) square.x += speed
-            if (views.input.keys[Key.UP]) square.y -= speed
-            if (views.input.keys[Key.DOWN]) square.y += speed
-        }*/
+        var keys: MutableList<Key> = mutableListOf()
 
         addUpdater { time ->
-            board.update()
+            keys.clear()
+            if (views.input.keys[Key.LEFT]) keys.add(Key.LEFT)
+            if (views.input.keys[Key.RIGHT]) keys.add(Key.RIGHT)
+        }
+
+        addUpdater { time ->
+            board.update(keys)
         }
     }
 }
