@@ -17,7 +17,8 @@ class Board(val container: Container) {
         }
     }
     private var figure = Figure(container)
-    private var lastUpdated = Instant.now()
+    private var lastUpdated = System.currentTimeMillis()
+    private var lastUpdatedHorizontal = System.currentTimeMillis()
     var score = 0
     var gameOver = false
 
@@ -37,10 +38,10 @@ class Board(val container: Container) {
     }
 
     fun update(keys: List<Key>) {
-        if (Duration.between(lastUpdated, Instant.now()).seconds > UPDATE_TIME) {
+        if (System.currentTimeMillis() - this.lastUpdated > UPDATE_TIME) {
             if (this.mayFall()) {
                 this.figure.fall()
-                this.lastUpdated = Instant.now()
+                this.lastUpdated = System.currentTimeMillis()
             } else {
                 for (i in 0..<4) {
                     for (j in 0..<4) {
@@ -54,12 +55,15 @@ class Board(val container: Container) {
                 this.figure = Figure(this.container)
             }
 
+            this.checkFullRows()
+            this.checkGameOver()
+        }
+        if(System.currentTimeMillis() - this.lastUpdatedHorizontal > HORISONTAL_MOVEMENT_UPATE_TIME){
+            this.lastUpdatedHorizontal = System.currentTimeMillis()
+
             if (Key.LEFT in keys) this.figure.left()
             if (Key.RIGHT in keys) this.figure.right()
             if (Key.R in keys) this.figure.rotate()
-
-            this.checkFullRows()
-            this.checkGameOver()
         }
     }
 
