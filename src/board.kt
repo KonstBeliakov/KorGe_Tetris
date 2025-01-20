@@ -25,13 +25,24 @@ class Board(val container: Container) {
     private fun mayFall(): Boolean {
         for (i in 0..<4) {
             for (j in 0..<4) {
-                if (
-                    this.figure.blockPosition[i][j] == 1 &&
-                    (j + this.figure.y >= BOARD_SIZE_Y - 1 || this.grid[this.figure.x + i][this.figure.y + j + 1].color != BOARD_COLOR)
-                ) {
+                if (this.figure.blockPosition[i][j] == 1 &&
+                    (j + this.figure.y >= BOARD_SIZE_Y - 1 ||
+                            this.grid[this.figure.x + i][this.figure.y + j + 1].color != BOARD_COLOR))
                     return false
-                }
+            }
+        }
+        return true
+    }
 
+    private fun correctFigurePosition(): Boolean{
+        for(i in 0..<4){
+            for(j in 0..<4){
+                if(this.figure.blockPosition[i][j] == 1){
+                    if (j + this.figure.y >= BOARD_SIZE_Y || i + this.figure.x >= BOARD_SIZE_X ||
+                            i + this.figure.x < 0 ||
+                        this.grid[i + this.figure.x][j + this.figure.y].color != BOARD_COLOR)
+                        return false
+                }
             }
         }
         return true
@@ -61,9 +72,24 @@ class Board(val container: Container) {
         if(System.currentTimeMillis() - this.lastUpdatedHorizontal > HORISONTAL_MOVEMENT_UPATE_TIME){
             this.lastUpdatedHorizontal = System.currentTimeMillis()
 
-            if (Key.LEFT in keys) this.figure.left()
-            if (Key.RIGHT in keys) this.figure.right()
-            if (Key.R in keys) this.figure.rotate()
+            if (Key.LEFT in keys){
+                this.figure.left()
+                if(!this.correctFigurePosition()) {
+                    this.figure.right()
+                    println("can't move to the left :(")
+                }
+
+            }
+            if (Key.RIGHT in keys){
+                this.figure.right()
+                if(!this.correctFigurePosition()) this.figure.left()
+            }
+            if (Key.R in keys){
+                this.figure.rotate()
+                if(!this.correctFigurePosition()){
+                    repeat(3){this.figure.rotate()}
+                }
+            }
         }
     }
 
