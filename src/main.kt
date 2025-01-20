@@ -32,6 +32,7 @@ class MyScene : Scene() {
             keys.clear()
             if (views.input.keys[Key.LEFT]) keys.add(Key.LEFT)
             if (views.input.keys[Key.RIGHT]) keys.add(Key.RIGHT)
+            if (views.input.keys[Key.R]) keys.add(Key.R)
         }
 
         val score = text("Score: 0", textSize = 32.0).apply {

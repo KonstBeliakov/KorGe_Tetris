@@ -56,6 +56,7 @@ class Board(val container: Container) {
 
             if (Key.LEFT in keys) this.figure.left()
             if (Key.RIGHT in keys) this.figure.right()
+            if (Key.R in keys) this.figure.rotate()
         }
     }
 
