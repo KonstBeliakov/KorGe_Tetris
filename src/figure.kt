@@ -8,13 +8,13 @@ class Figure(container: Container) {
     var x = 0
     var y = 0
     val color = Colors.BLUE
-    var block_position = listOf(
+    var blockPosition = listOf(
         listOf(1, 0, 0, 0),
         listOf(1, 0, 0, 0),
         listOf(1, 0, 0, 0),
         listOf(1, 0, 0, 0)
     )
-    val blocks = List(4) { i ->
+    private val blocks = List(4) { i ->
         container.solidRect(BLOCK_SIZE, BLOCK_SIZE, this.color) {
             position(50.0 + i * (BLOCK_SIZE + SEPARATION), 50.0 + 0 * (BLOCK_SIZE + SEPARATION))
         }

@@ -16,15 +16,15 @@ class Board(val container: Container) {
             }
         }
     }
-    var figure = Figure(container)
-    var last_updated = Instant.now()
+    private var figure = Figure(container)
+    private var lastUpdated = Instant.now()
     var score = 0
 
-    fun mayFall(): Boolean {
+    private fun mayFall(): Boolean {
         for (i in 0..<4) {
             for (j in 0..<4) {
                 if (
-                    this.figure.block_position[i][j] == 1 &&
+                    this.figure.blockPosition[i][j] == 1 &&
                     (j + this.figure.y >= BOARD_SIZE_Y - 1 || this.grid[this.figure.x + i][this.figure.y + j + 1].color != BOARD_COLOR)
                 ) {
                     return false
@@ -36,21 +36,19 @@ class Board(val container: Container) {
     }
 
     fun update(keys: List<Key>) {
-        if (Duration.between(last_updated, Instant.now()).seconds > UPDATE_TIME) {
+        if (Duration.between(lastUpdated, Instant.now()).seconds > UPDATE_TIME) {
             if (this.mayFall()) {
-                println("figure fall")
                 this.figure.fall()
-                this.last_updated = Instant.now()
+                this.lastUpdated = Instant.now()
             } else {
-                println("figure can't fall")
                 for (i in 0..<4) {
                     for (j in 0..<4) {
-                        if (this.figure.block_position[i][j] == 1) {
+                        if (this.figure.blockPosition[i][j] == 1) {
                             this.grid[i + this.figure.x][j + this.figure.y].color = figure.color
                         }
                     }
                 }
-                this.check_full_rows()
+                this.checkFullRows()
 
                 this.figure.hide()
                 this.figure = Figure(this.container)
@@ -61,8 +59,8 @@ class Board(val container: Container) {
         }
     }
 
-    private fun remove_row(row_number: Int){
-        for(y in row_number downTo 1){
+    private fun removeRow(rowNumber: Int){
+        for(y in rowNumber downTo 1){
             for(x in 0..<BOARD_SIZE_X){
                 this.grid[x][y].color = this.grid[x][y-1].color
             }
@@ -72,17 +70,17 @@ class Board(val container: Container) {
             this.grid[0][x].color = BOARD_COLOR
     }
 
-    private fun check_full_rows() {
-        var rows_removed = 0
+    private fun checkFullRows() {
+        var rowsRemoved = 0
         for(y in 0..<BOARD_SIZE_Y){
             // if the row is full
             if (List(BOARD_SIZE_X){ x -> this.grid[x][y]}.all{ it.color != BOARD_COLOR }){
-                this.remove_row(y)
-                rows_removed ++
+                this.removeRow(y)
+                rowsRemoved ++
             }
         }
 
-        this.score += when(rows_removed){
+        this.score += when(rowsRemoved){
             1 ->  100
             2 ->  200
             3 ->  400
