@@ -51,10 +51,34 @@ class MyScene : Scene() {
             color = Colors.RED
         }
 
+        val newGameText = text("Press N to start a new game", textSize = 18.0).apply {
+            x = (views.virtualWidth - width) / 2
+            y = (views.virtualHeight - height) / 2 + 50
+            visible = false
+            color = Colors.RED
+        }
+
+        var sumScore = 0
+        var games = 0
+
+        val avgScoreText = text("Average score: ${if (games == 0) 0 else sumScore / games} ($games games)", textSize = 24.0).apply{
+            x = 200.0
+            y = 0.0
+        }
+
         addUpdater { time ->
             if (board.gameOver) {
                 gameOverText.visible = true
+                newGameText.visible = true
+                if (views.input.keys[Key.N]){
+                    sumScore += board.score
+                    games ++
+                    board.newGame()
+                    avgScoreText.text = "Average score: ${if (games == 0) 0 else sumScore / games} ($games games)"
+                }
             } else {
+                gameOverText.visible = false
+                newGameText.visible = false
                 board.update(keys)
             }
             score.text = "Score: ${board.score}"

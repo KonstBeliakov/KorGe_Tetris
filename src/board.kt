@@ -199,4 +199,16 @@ class Board(private val container: Container, val boardEvaluator: BoardEvaluator
         if (List(BOARD_SIZE_X) { x -> this.grid[x][0] }.any { it.color != BOARD_COLOR })
             this.gameOver = true
     }
+
+    fun newGame(){
+        for(i in 0..<BOARD_SIZE_X){
+            for(j in 0..<BOARD_SIZE_Y){
+                this.grid[i][j].color = BOARD_COLOR
+            }
+        }
+        this.figure.hide()
+        this.figure = Figure(this.container)
+        this.gameOver = false
+        this.score = 0
+    }
 }
