@@ -4,8 +4,9 @@ import figure.*
 import korlibs.event.*
 import korlibs.korge.view.*
 import settings.*
+import board_evaluator.*
 
-class Board(val container: Container) {
+class Board(private val container: Container, val boardEvaluator: BoardEvaluator) {
     var grid: List<List<SolidRect>> = List(BOARD_SIZE_X) { x ->
         List(BOARD_SIZE_Y) { y ->
             container.solidRect(BLOCK_SIZE, BLOCK_SIZE, BOARD_COLOR) {
@@ -38,19 +39,8 @@ class Board(val container: Container) {
         }
     }
 
-    fun moveEvalute(x: Int, y: Int, figreType: Int, rotation: Int): Int {
-        var s = 0
-        for(i in 0..<4){
-            for(j in 0..<4){
-                if (blockPositions[figreType][rotation][i][j] == 1)
-                    s += (y + j)
-            }
-        }
-        return s
-    }
-
     fun optimizedFastFall() {
-        var maxMoveValue = -1000
+        var maxMoveValue = -1000.0
         var mRotation = 0
         var mRight = 0
         var mDy = 0
@@ -79,8 +69,8 @@ class Board(val container: Container) {
                     }
                 }
 
-                val moveValue = this.moveEvalute(
-                        this.figure.x + right, this.figure.y + dy, this.figure.blockType, (this.figure.rotation + rotation) % 4
+                val moveValue = this.boardEvaluator.moveEvalute(
+                        this.grid, this.figure.x + right, this.figure.y + dy, this.figure.blockType, (this.figure.rotation + rotation) % 4
                     )
 
                 if (moveValue > maxMoveValue) {

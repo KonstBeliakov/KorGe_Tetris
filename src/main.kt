@@ -1,3 +1,5 @@
+import board.*
+import board_evaluator.*
 import korlibs.event.*
 import korlibs.time.*
 import korlibs.korge.*
@@ -14,7 +16,6 @@ import korlibs.math.geom.*
 import korlibs.math.interpolation.*
 
 import settings.*
-import board.Board
 
 suspend fun main() = Korge(windowSize = Size(512, 512), backgroundColor = Colors["#2b2b2b"]) {
     val sceneContainer = sceneContainer()
@@ -24,7 +25,8 @@ suspend fun main() = Korge(windowSize = Size(512, 512), backgroundColor = Colors
 
 class MyScene : Scene() {
     override suspend fun SContainer.sceneMain() {
-        val board = Board(this)
+        val evaluator = BoardEvaluator(listOf(1.0, -5.0))
+        val board = Board(this, evaluator)
 
         var keys: MutableList<Key> = mutableListOf()
 
