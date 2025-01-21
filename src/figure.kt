@@ -205,7 +205,6 @@ class Figure(container: Container) {
     val blockType = Random.nextInt(0, blockPositions.size)
     val color = figureColors[this.blockType]
     var rotation = 0
-    var blockPosition = blockPositions[this.blockType][this.rotation]
     private val blocks = List(4) { i ->
         container.solidRect(BLOCK_SIZE, BLOCK_SIZE, this.color) {
             position(50.0 + i * (BLOCK_SIZE + SEPARATION), 50.0 + 0 * (BLOCK_SIZE + SEPARATION))
@@ -245,7 +244,6 @@ class Figure(container: Container) {
 
     fun rotate() {
         this.rotation = (this.rotation + 1) % 4
-        this.blockPosition = blockPositions[this.blockType][this.rotation]
         this.setBlocksPosition()
     }
 
@@ -253,7 +251,7 @@ class Figure(container: Container) {
         val pos: MutableList<List<Int>> = mutableListOf()
         for (i in 0..<4) {
             for (j in 0..<4) {
-                if (this.blockPosition[i][j] == 1)
+                if (blockPositions[this.blockType][this.rotation][i][j] == 1)
                     pos.add(listOf(i, j))
             }
         }

@@ -25,7 +25,7 @@ class Board(val container: Container) {
     private fun mayFall(): Boolean {
         for (i in 0..<4) {
             for (j in 0..<4) {
-                if (this.figure.blockPosition[i][j] == 1 &&
+                if (blockPositions[this.figure.blockType][this.figure.rotation][i][j] == 1 &&
                     (j + this.figure.y >= BOARD_SIZE_Y - 1 ||
                             this.grid[this.figure.x + i][this.figure.y + j + 1].color != BOARD_COLOR))
                     return false
@@ -37,7 +37,7 @@ class Board(val container: Container) {
     private fun correctFigurePosition(): Boolean{
         for(i in 0..<4){
             for(j in 0..<4){
-                if(this.figure.blockPosition[i][j] == 1){
+                if(blockPositions[this.figure.blockType][this.figure.rotation][i][j] == 1){
                     if (j + this.figure.y >= BOARD_SIZE_Y || i + this.figure.x >= BOARD_SIZE_X ||
                             i + this.figure.x < 0 ||
                         this.grid[i + this.figure.x][j + this.figure.y].color != BOARD_COLOR)
@@ -56,7 +56,7 @@ class Board(val container: Container) {
             } else {
                 for (i in 0..<4) {
                     for (j in 0..<4) {
-                        if (this.figure.blockPosition[i][j] == 1) {
+                        if (blockPositions[this.figure.blockType][this.figure.rotation][i][j] == 1) {
                             this.grid[i + this.figure.x][j + this.figure.y].color = figure.color
                         }
                     }
