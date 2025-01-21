@@ -40,7 +40,7 @@ class Board(private val container: Container, val boardEvaluator: BoardEvaluator
     }
 
     fun optimizedFastFall() {
-        var maxMoveValue = -1000.0
+        var maxMoveValue = -10000.0
         var mRotation = 0
         var mRight = 0
         var mDy = 0
@@ -80,15 +80,45 @@ class Board(private val container: Container, val boardEvaluator: BoardEvaluator
                     mDy = dy
                 }
             }
+
+            for (right in 1 downTo -3) {
+                if (!this.correctFigurePosition(
+                        this.figure.x + right, this.figure.y, this.figure.blockType, (this.figure.rotation + rotation) % 4
+                    )
+                )
+                    break
+
+                var dy = 0
+                for(dy_ in 0..<BOARD_SIZE_Y){
+                    if (!this.correctFigurePosition(
+                        this.figure.x + right, this.figure.y + dy_, this.figure.blockType, (this.figure.rotation + rotation) % 4
+                    )
+                    ){
+                        dy = dy_ - 1
+                        break
+                    }
+                }
+
+                val moveValue = this.boardEvaluator.moveEvalute(
+                        this.grid, this.figure.x + right, this.figure.y + dy, this.figure.blockType, (this.figure.rotation + rotation) % 4
+                    )
+
+                if (moveValue > maxMoveValue) {
+                    maxMoveValue = moveValue
+                    mRotation = rotation
+                    mRight = right
+                    mDy = dy
+                }
+            }
         }
 
-        //this.figure.x += mRiht
-        //this.figure.rotation = (this.figure.rotation + mRotation) % 4
-        //this.figure.setBlocksPosition()
+        this.boardEvaluator.moveEvalute(
+                        this.grid, this.figure.x + mRight, this.figure.y + mDy, this.figure.blockType, (this.figure.rotation + mRotation) % 4, log=true)
 
-        repeat(mRotation) { this.figure.rotate() }
-        repeat(mRight) { this.figure.right() }
-        repeat(mDy) { this.figure.fall() }
+        this.figure.x += mRight
+        this.figure.rotation = (this.figure.rotation + mRotation) % 4
+        this.figure.y += mDy
+        this.figure.setBlocksPosition()
     }
 
     private fun correctFigurePosition(x: Int, y: Int, figreType: Int, rotation: Int): Boolean {

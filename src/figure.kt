@@ -247,7 +247,7 @@ class Figure(container: Container) {
         this.setBlocksPosition()
     }
 
-    private fun setBlocksPosition() {
+    fun setBlocksPosition() {
         val pos: MutableList<List<Int>> = mutableListOf()
         for (i in 0..<4) {
             for (j in 0..<4) {
